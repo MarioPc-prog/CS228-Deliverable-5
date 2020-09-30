@@ -18,7 +18,7 @@ function RecordData(){
         console.log(oneFrameOfData.toString());
     }
 }
-function HandleBone(bone,thick,stroke,fingerIndex){
+function HandleBone(bone,thick,stroke,fingerIndex,InteractionBox){
     //the distal end of the bone closest to the finger tip .nextJoint
     var x = bone.nextJoint[0];
     var y = bone.nextJoint[1];
@@ -89,7 +89,7 @@ function TransformCoordinates(x,y){
         
     return [x,y];
 }
-function HandleHand(hand){
+function HandleHand(hand,InteractionBox){
         var fingers = hand.fingers;
         for (var i = 0;i < fingers.length; i++){
             //console.log(fingers);
@@ -105,21 +105,21 @@ function HandleHand(hand){
                     var thick = strokeWeight(10);
                     var bone = bones[x];
                     stroke('rgb(0,255,0)');
-                    HandleBone(bone,thick,stroke,finger);
+                    HandleBone(bone,thick,stroke,finger,InteractionBox);
                 }
                 if(bones[x].type === 1){
                     var thick = strokeWeight(10);
                     var bone = bones[x];
                     stroke('rgb(0,255,0)');
-                    HandleBone(bone,thick,stroke,finger);
+                    HandleBone(bone,thick,stroke,finger,InteractionBox);
                 }
                 if(bones[x].type === 2){
                     var thick = strokeWeight(5);
                     var bone = bones[x];
                     stroke(51);
-                    HandleBone(bone,thick,stroke,finger);
+                    HandleBone(bone,thick,stroke,finger,InteractionBox);
                 }
-                HandleBone(bone,thick,stroke,finger);
+                HandleBone(bone,thick,stroke,finger,InteractionBox);
                 
          
             }
@@ -128,12 +128,13 @@ function HandleHand(hand){
     }
             
 function Handleframe(frame){
+        InteractionBox = frame.InteractionBox();
 	if(frame.hands.length===1 || frame.hands.length===2){    
                 clear();
                 currentNumHands = frame.hands.length;
                 var hand = frame.hands[0];
                 //console.log(hand);
-		HandleHand(hand);
+		HandleHand(hand,InteractionBox);
                 RecordData();
                 previousNumHands = currentNumHands;
 	}
