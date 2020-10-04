@@ -1,12 +1,16 @@
 var controllerOptions = {};
 var previousNumHands = 0 ;
 var currentNumHands = 0;
-var oneFrameOfData = nj.zeros([5,4,6]);
+var numSamples = 2;
+var currentSamples = 0;
+var FramesOfData = nj.zeros([5,4,6,numSamples]);
+
+
 //creates the black snap 
 function RecordData(){
     if(currentNumHands===1 && previousNumHands === 2){
         background('#222222');
-        console.log(oneFrameOfData.toString());
+        console.log(FramesOfData.pick(null,null,null,1).toString() );
     }
 }
 function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
@@ -21,12 +25,12 @@ function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     y1 = normalizedNextJoint[1];
     z1 = normalizedNextJoint[2];
      
-    oneFrameOfData.set(fingerIndex.type,bone.type,0,x1);
-    oneFrameOfData.set(fingerIndex.type,bone.type,1,y1);
-    oneFrameOfData.set(fingerIndex.type,bone.type,2,z1);
-    oneFrameOfData.set(fingerIndex.type,bone.type,3,x);
-    oneFrameOfData.set(fingerIndex.type,bone.type,4,y);
-    oneFrameOfData.set(fingerIndex.type,bone.type,5,z);
+    FramesOfData.set(fingerIndex.type,bone.type,0,currentSamples,x);
+    FramesOfData.set(fingerIndex.type,bone.type,1,currentSamples,y);
+    FramesOfData.set(fingerIndex.type,bone.type,2,currentSamples,z);
+    FramesOfData.set(fingerIndex.type,bone.type,3,currentSamples,x1);
+    FramesOfData.set(fingerIndex.type,bone.type,4,currentSamples,y1);
+    FramesOfData.set(fingerIndex.type,bone.type,5,currentSamples,z1);
     //expanding the canvas and apply new scaling 
     var canvasX = window.innerWidth * normalizedPrevJoint[0];
     var canvasY = window.innerHeight * (1 - normalizedPrevJoint[1]);
