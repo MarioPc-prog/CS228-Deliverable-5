@@ -6,7 +6,7 @@ var oneFrameOfData = nj.zeros([5,4,6]);
 function RecordData(){
     if(currentNumHands===1 && previousNumHands === 2){
         background('#222222');
-        //console.log(oneFrameOfData.toString());
+        console.log(oneFrameOfData.toString());
     }
 }
 function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
@@ -27,13 +27,12 @@ function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     oneFrameOfData.set(fingerIndex.type,bone.type,3,x);
     oneFrameOfData.set(fingerIndex.type,bone.type,4,y);
     oneFrameOfData.set(fingerIndex.type,bone.type,5,z);
-    //expanding the canvas 
+    //expanding the canvas and apply new scaling 
     var canvasX = window.innerWidth * normalizedPrevJoint[0];
     var canvasY = window.innerHeight * (1 - normalizedPrevJoint[1]);
-
     var canvasX1 = window.innerWidth * normalizedNextJoint[0];
     var canvasY1 = window.innerHeight * (1 - normalizedNextJoint[1]);
-    console.log(canvasX,canvasY,canvasX1,canvasY1);
+    //sum of cords noramized 
     var Sum = (x + x1 + y + y1 + z + z1);
     //call line p5 method 
     thick;
