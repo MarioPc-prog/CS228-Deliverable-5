@@ -4,13 +4,13 @@ var currentNumHands = 0;
 var numSamples = 2;
 var currentSamples = 0;
 var FramesOfData = nj.zeros([5,4,6,numSamples]);
+nj.config.printThreshold = 1000;
 
 
 //creates the black snap 
 function RecordData(){
     if (currentNumHands===2){
         currentSamples++;
-        console.log(currentSamples);
         
     if (currentSamples === numSamples){
         currentSamples = 0;
@@ -18,7 +18,7 @@ function RecordData(){
 }
     if(previousNumHands===2 && currentNumHands === 1){
         background('#222222');
-        console.log(FramesOfData.pick(null,null,null,1).toString() );
+        console.log(FramesOfData.toString() );
        
     }
 }
