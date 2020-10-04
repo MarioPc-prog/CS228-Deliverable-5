@@ -32,12 +32,11 @@ function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     var x1 = bone.prevJoint[0];
     var y1 = bone.prevJoint[1];
     var z1 = bone.prevJoint[2]; 
-    var normalizedPrevJointx1 = interactionBox.normalizePoint(x1,true);
-    var normalizedPrevJointy1 = interactionBox.normalizePoint(y1,true);
+    var normalizedPrevJoint = interactionBox.normalizePoint(x1,true);
 //    var normalizedPrevJointy1 = InteractionBox.normalizePoint(y1,true);
 //    var normalizedPrevJointz1 = InteractionBox.normalizePoint(z1,true);
-    console.log(normalizedPrevJointx1);
-    console.log(normalizedPrevJointy1);
+    console.log(normalizedPrevJoint.toString());
+    //console.log(normalizedPrevJointy1);
      //return from TransformCoordinate is a array , access with [] set to the base of the bone
     var xB = TransformCoordinates(x1,y1)[0];
     var yB = TransformCoordinates(x1,y1)[1];
