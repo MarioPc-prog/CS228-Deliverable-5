@@ -1,13 +1,4 @@
 var controllerOptions = {};
-var x = window.innerWidth;
-var y = window.innerHeight;
-var rawXMin = 1000;
-var rawXMax = 100;
-var rawYMin = 1000;
-var rawYMax = 100;
-var rawZMax = 100;
-var rawZmin = 1000;
-//global variables to keep track of the current number of hands 
 var previousNumHands = 0 ;
 var currentNumHands = 0;
 var oneFrameOfData = nj.zeros([5,4,6]);
@@ -20,28 +11,15 @@ function RecordData(){
 }
 function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     //the distal end of the bone closest to the finger tip .nextJoint
-    //var normalizePrevJoint = interactionBox.normalizePoint(bone.prevJoint, true);
-    var normalizeNextJoint = interactionBox.normalizePoint(bone.nextJoint, true);
-    console.log(normalizeNextJoint);
-    var x = bone.nextJoint[0];
-    var y = bone.nextJoint[1];
-    var z = bone.nextJoint[2];
-    //return from TransformCoordinate is a array , access with [] set to the tip of the bone
-    var xT = TransformCoordinates(x,y)[0];
-    var yT = TransformCoordinates(x,y)[1];
-    //console.log(xT,yT);
-    
-    //the proximal end of the bone closest to the torso 
-    var x1 = bone.prevJoint[0];
-    var y1 = bone.prevJoint[1];
-    var z1 = bone.prevJoint[2]; 
-     //return from TransformCoordinate is a array , access with [] set to the base of the bone
-    var xB = TransformCoordinates(x1,y1)[0];
-    var yB = TransformCoordinates(x1,y1)[1];
-    var sum = (xT,xB,yT,yB,z,z1);
-    //console.log(sum);
-    //store the rresulting sum in the fingerIndexth element of OneFrameOfData
-     //oneFrameOfData.set(fingerIndex.type,bone.type,sum);
+    var normalizedPrevJoint = interactionBox.normalizePoint(bone.prevJoint, true);
+    var normalizedNextJoint = interactionBox.normalizePoint(bone.nextJoint, true);
+    //create new varaibles x , y , z , x1, y1, z1 , set to the nextJoint and PrevJoint 
+    x = normalizedPrevJoint[0];
+    y = normalizedPrevJoint[1];
+    z = normalizedPrevJoint[2];
+    x1 = normalizedNextJoint[0];
+    y1 = normalizedNextJoint[1];
+    z1 = normalizedNextJoint[2];
      
     oneFrameOfData.set(fingerIndex.type,bone.type,0,x1);
     oneFrameOfData.set(fingerIndex.type,bone.type,1,y1);
@@ -49,48 +27,25 @@ function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     oneFrameOfData.set(fingerIndex.type,bone.type,3,x);
     oneFrameOfData.set(fingerIndex.type,bone.type,4,y);
     oneFrameOfData.set(fingerIndex.type,bone.type,5,z);
-    
-  
-  
-    
-   
-    
+    //expanding the canvas 
+    var canvasX = window.innerWidth * normalizedPrevJoint[0];
+    var canvasY = window.innerHeight * (1 - normalizedPrevJoint[1]);
+
+    var canvasX1 = window.innerWidth * normalizedNextJoint[0];
+    var canvasY1 = window.innerHeight * (1 - normalizedNextJoint[1]);
+    console.log(canvasX,canvasY,canvasX1,canvasY1);
+    var Sum = (x + x1 + y + y1 + z + z1);
     //call line p5 method 
     thick;
     stroke;
     //create a hand variable and and draw only green if only one hand is detected 
     if (previousNumHands === 1){
-         line(xT,yT,xB,yB);
+         line(canvasX,canvasY,canvasX1,canvasY1);
     }
     else{
         stroke('red');
-        line(xT,yT,xB,yB);
+        line(canvasX,canvasY,canvasX1,canvasY1);
     }
-}
-function TransformCoordinates(x,y){
-        if (x <rawXMin){
-		rawXMin = x;
-	}
-	if (x > rawXMax){
-                rawXMax = x;
-        }
-	if (y <rawYMin){
-                rawYMin = y;
-        }
-	if (y > rawYMax){
-                rawYMax = y;
-        }
-        //apply same scaling  
-        var oldRangeX = (rawXMax-rawXMin);
-	var newRangeX=(window.innerWidth-0);
-	x =(((x - rawXMin) * newRangeX) /oldRangeX) + rawXMin;
-        var oldRangeY = (rawYMax-rawYMin);
-        var newRangeY=(window.innnerHeight-0);
-        var newY =(((y - rawYMin) * newRangeY) /oldRangeY) + rawYMin;
-	newY =(y-rawYMin)*(window.innerHeight-0)/(rawYMax-rawYMin)+0;
-        y = window.innerHeight-newY;
-        
-    return [x,y];
 }
 function HandleHand(hand,interactionBox){
         var fingers = hand.fingers;
