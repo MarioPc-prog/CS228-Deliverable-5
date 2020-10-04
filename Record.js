@@ -8,9 +8,18 @@ var FramesOfData = nj.zeros([5,4,6,numSamples]);
 
 //creates the black snap 
 function RecordData(){
-    if(currentNumHands===1 && previousNumHands === 2){
+    if (currentNumHands===2){
+        currentSamples++;
+        console.log(currentSamples);
+        
+    if (currentSamples === numSamples){
+        currentSamples = 0;
+    }
+}
+    if(previousNumHands===2 && currentNumHands === 1){
         background('#222222');
         console.log(FramesOfData.pick(null,null,null,1).toString() );
+       
     }
 }
 function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
