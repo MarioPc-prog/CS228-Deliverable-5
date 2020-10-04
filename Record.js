@@ -20,6 +20,9 @@ function RecordData(){
 }
 function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     //the distal end of the bone closest to the finger tip .nextJoint
+    //var normalizePrevJoint = interactionBox.normalizePoint(bone.prevJoint, true);
+    var normalizeNextJoint = interactionBox.normalizePoint(bone.nextJoint, true);
+    console.log(normalizeNextJoint);
     var x = bone.nextJoint[0];
     var y = bone.nextJoint[1];
     var z = bone.nextJoint[2];
@@ -32,11 +35,6 @@ function HandleBone(bone,thick,stroke,fingerIndex,interactionBox){
     var x1 = bone.prevJoint[0];
     var y1 = bone.prevJoint[1];
     var z1 = bone.prevJoint[2]; 
-    var normalizedPrevJoint = interactionBox.normalizePoint(x1,true);
-//    var normalizedPrevJointy1 = InteractionBox.normalizePoint(y1,true);
-//    var normalizedPrevJointz1 = InteractionBox.normalizePoint(z1,true);
-    console.log(normalizedPrevJoint.toString());
-    //console.log(normalizedPrevJointy1);
      //return from TransformCoordinate is a array , access with [] set to the base of the bone
     var xB = TransformCoordinates(x1,y1)[0];
     var yB = TransformCoordinates(x1,y1)[1];
@@ -133,7 +131,7 @@ function HandleHand(hand,interactionBox){
     }
             
 function Handleframe(frame){
-        interactionBox = frame.interactionBox;
+        var interactionBox = frame.interactionBox;
 	if(frame.hands.length===1 || frame.hands.length===2){    
                 clear();
                 currentNumHands = frame.hands.length;
