@@ -6,13 +6,13 @@ const knnClassifier = ml5.KNNClassifier();
 
 function Train(){
     trainingCompleted = true;
-//  console.log(train0);
-//  console.log(test);
   for (var i = 0; i < train0.shape[3]; i++) {
-      //console.log(train0.pick(null, null, null, i).toString());
       var features = train0.pick(null, null, null, i).reshape(1,120);
-      console.log(features);
       knnClassifier.addExample(features.tolist(),0);
+      //console.log(features);
+      features = train1.pick(null,null,null,i).reshape(1,120);
+      knnClassifier.addExample(features.tolist(),1);
+      //console.log(features);
   }
 }
 function Test(){
@@ -23,7 +23,7 @@ function Test(){
 function GotResults(err, result){
     predictedClassLabels.set(testingSampleIndex, parseInt(result.label));
     testingSampleIndex += 1;
-    console.log(testingSampleIndex + ": " + predictedClassLabels.get(testingSampleIndex))
+    console.log(testingSampleIndex + ": " + predictedClassLabels.get(testingSampleIndex));
     if (testingSampleIndex > 1){
         testingSampleIndex = 0;
     }
