@@ -19,6 +19,8 @@ function RecordData(){
     if(previousNumHands===2 && currentNumHands === 1){
         background('#222222');
         console.log(FramesOfData.toString() );
+        //console.log(FramesOfData.toString() );
+        //console.log(currentSamples);
        
     }
 }
